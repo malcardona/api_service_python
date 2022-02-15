@@ -53,6 +53,23 @@ def report(limit=0, offset=0):
 
     return json_result_list
 
+def dashboard():
+    x_q = db.session.query(Persona.id)
+    x_axe =[x for x in x_q]
+    print(x_axe)
+
+    #if x_axe is None or len(x_axe) == 0:
+        #return []
+    
+    y_q =db.session.query(Persona.age)
+    y_axe =[y for y in y_q]
+    print(y_axe)
+
+    #if y_axe is None or len(y_axe) == 0:
+        #return []
+    
+    return x_axe, y_axe
+
 
 if __name__ == "__main__":
     print("Test del modulo heart.py")
@@ -72,6 +89,8 @@ if __name__ == "__main__":
 
     # Aquí se puede ensayar todo lo que necesitemos con nuestra DB
     # ...
+
+    dashboard()
 
     db.session.remove()
     db.drop_all()

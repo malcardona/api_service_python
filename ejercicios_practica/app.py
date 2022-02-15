@@ -54,14 +54,20 @@ def personas():
         # Alumno:
         # Implementar la captura de limit y offset de los argumentos
         # de la URL
-        # limit = ...
-        # offset = ....
+        limit_str = str(request.args.get('limit'))
+        offset_str = str(request.args.get('offset'))
 
         # Debe verificar si el limit y offset son válidos cuando
         # no son especificados en la URL
 
         limit = 0
         offset = 0
+
+        if(limit_str is not None) and (limit_str.isdigit()):
+            limit = int(limit_str)
+
+        if(offset_str is not None) and (offset_str.isdigit()):
+            offset = int(offset_str)
 
         result = persona.report(limit=limit, offset=offset)
         return jsonify(result)
@@ -78,12 +84,16 @@ def registro():
             age = 0
             # Alumno:
             # Obtener del HTTP POST JSON el nombre y los pulsos
-            # name = ...
-            # age = ...
+            name = str(request.form.get('name')).lower()
+            age = str(request.form.get('age'))
+
+            if(name is None or age is None or age.isdigit() is False):
+            # Datos ingresados incorrectos
+                return Response(status=400)
 
             # Alumno: descomentar la linea persona.insert una vez implementado
             # lo anterior:
-            # persona.insert(name, int(age))
+            persona.insert(name, int(age))
             return Response(status=200)
         except:
             return jsonify({'trace': traceback.format_exc()})
@@ -106,11 +116,10 @@ def comparativa():
 
         # Descomentar luego de haber implementado su función en persona.py:
 
-        # x, y = persona.dashboard()
-        # image_html = utils.graficar(x, y)
-        # return Response(image_html.getvalue(), mimetype='image/png')
-
-        return "Alumno --> Realice la implementacion"
+        x, y = persona.dashboard()
+        image_html = utils.graficar(x, y)
+        return Response(image_html.getvalue(), mimetype='image/png')
+        
     except:
         return jsonify({'trace': traceback.format_exc()})
 
