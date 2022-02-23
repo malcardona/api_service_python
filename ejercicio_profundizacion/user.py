@@ -34,7 +34,11 @@ def fill():
 def title_completed_count(userId):
     completed_count = db.session.query(User).filter(User.userId == userId).filter(User.completed == True).count()
 
-    print(completed_count)
+    return completed_count
+
+def title_completed_axes():
+    x = db.session.query(User).filter(User.id).with_entities()
+    return x 
 
 if __name__ == "__main__":
     print("Test del modulo user.py")
@@ -55,4 +59,5 @@ if __name__ == "__main__":
     
 fill()
 
-title_completed_count(5)
+base = title_completed_axes()
+print(base)
